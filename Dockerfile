@@ -13,6 +13,7 @@ RUN apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys E184859262B4981F \
     fusiondirectory-plugin-autofs-schema=${FUSIONDIRECTORY_VERSION} \
     fusiondirectory-plugin-gpg-schema=${FUSIONDIRECTORY_VERSION} \
     fusiondirectory-plugin-mail-schema=${FUSIONDIRECTORY_VERSION} \
+    fusiondirectory-plugin-postfix-schema=${FUSIONDIRECTORY_VERSION} \
     fusiondirectory-plugin-ssh-schema=${FUSIONDIRECTORY_VERSION} \
     fusiondirectory-plugin-sudo-schema=${FUSIONDIRECTORY_VERSION} \
     fusiondirectory-plugin-systems-schema=${FUSIONDIRECTORY_VERSION} \
