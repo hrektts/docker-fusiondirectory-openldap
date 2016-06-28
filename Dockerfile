@@ -22,4 +22,6 @@ RUN apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys E184859262B4981F \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN sed -i "/# stop OpenLDAP/i fusiondirectory-insert-schema" /container/service/slapd/startup.sh
+COPY init.sh /sbin/init.sh
+RUN chmod 755 /sbin/init.sh
+RUN sed -i "/# stop OpenLDAP/i /sbin/init.sh" /container/service/slapd/startup.sh
