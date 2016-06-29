@@ -1,7 +1,12 @@
 all: build
 
 build:
-	@docker build --tag=hrektts/fusiondirectory-openldap:latest .
+	@docker build -t hrektts/fusiondirectory-openldap:latest .
 
 release: build
-	@docker build --tag=hrektts/fusiondirectory-openldap:$(shell cat VERSION) .
+	@docker build -t hrektts/fusiondirectory-openldap:$(shell cat VERSION) .
+
+.PHONY: test
+test:
+	@docker build -t hrektts/fusiondirectory-openldap:bats .
+	bats test
