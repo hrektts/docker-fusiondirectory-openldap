@@ -1,4 +1,4 @@
-FROM osixia/openldap:1.1.3
+FROM osixia/openldap:1.1.5
 MAINTAINER mps299792458@gmail.com
 
 ENV FUSIONDIRECTORY_VERSION=1.0.13-1
