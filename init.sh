@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 
+BOOTSTRAPPED=/etc/ldap/slapd.d/bootstrapped
+if [ -e ${BOOTSTRAPPED} ]; then
+    exit 0
+fi
+
 IFS='.' read -a domain_elems <<< "${LDAP_DOMAIN}"
 SUFFIX=""
 TOP=""
@@ -194,3 +199,4 @@ fusiondirectory-insert-schema -m /etc/ldap/schema/fusiondirectory/modify/*.schem
 ldapadd -x -D "cn=admin,${SUFFIX}" -w ${LDAP_ADMIN_PASSWORD} -f /tmp/add.ldif
 
 rm -rf /tmp/*
+touch ${BOOTSTRAPPED}
