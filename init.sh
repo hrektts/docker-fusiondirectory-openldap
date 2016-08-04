@@ -24,7 +24,17 @@ CN_ADMIN_BS64=$(echo -n ${CN_ADMIN} | base64 | tr -d '\n')
 UID_FD_ADMIN_BS64=$(echo -n ${UID_FD_ADMIN} | base64 | tr -d '\n')
 FD_ADMIN_PASSWORD=${FD_ADMIN_PASSWORD:-"adminpassword"}
 
-cat <<EOF > /tmp/delete.ldif
+touch /tmp/delete.ldif
+
+if ${LDAP_READONLY_USER}; then
+    cat <<EOF >> /tmp/delete.ldif
+dn: cn=${LDAP_READONLY_USER_USERNAME},${SUFFIX}
+changetype: delete
+
+EOF
+fi
+
+cat <<EOF >> /tmp/delete.ldif
 dn: cn=admin,${SUFFIX}
 changetype: delete
 
@@ -57,6 +67,18 @@ description: LDAP administrator
 userPassword: ${LDAP_ADMIN_PASSWORD}
 
 EOF
+
+if ${LDAP_READONLY_USER}; then
+    cat <<EOF >> /tmp/base.ldif
+dn: cn=${LDAP_READONLY_USER_USERNAME},${SUFFIX}
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+cn: cn=${LDAP_READONLY_USER_USERNAME}
+description: LDAP read only user
+userPassword: ${LDAP_READONLY_USER_PASSWORD}
+
+EOF
+fi
 
 ldapadd -x -D "cn=admin,${SUFFIX}" -w ${LDAP_ADMIN_PASSWORD} -f /tmp/base.ldif
 
