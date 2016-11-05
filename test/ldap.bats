@@ -17,41 +17,41 @@
 @test "test" {
     BASE_DN=dc=example,dc=org
 
-    run ldapsearch -LLL -H ldap:/// -D cn=admin,${BASE_DN} -w adminpwd \
+    run ldapsearch -LLL -h localhost -D cn=admin,${BASE_DN} -w adminpwd \
         -b cn=admin,${BASE_DN}
     [ "${status}" -eq 0 ]
-    run ldapsearch -LLL -H ldap:/// -D cn=admin,${BASE_DN} -w adminpwd \
+    run ldapsearch -LLL -h localhost -D cn=admin,${BASE_DN} -w adminpwd \
         -b cn=readonly,${BASE_DN}
     [ "${status}" -eq 0 ]
-    run ldapsearch -LLL -H ldap:/// -D cn=admin,${BASE_DN} -w adminpwd \
+    run ldapsearch -LLL -h localhost -D cn=admin,${BASE_DN} -w adminpwd \
         -b ou=aclroles,${BASE_DN}
     [ "${status}" -eq 0 ]
-    run ldapsearch -LLL -H ldap:/// -D cn=admin,${BASE_DN} -w adminpwd \
+    run ldapsearch -LLL -h localhost -D cn=admin,${BASE_DN} -w adminpwd \
         -b cn=admin,ou=aclroles,${BASE_DN}
     [ "${status}" -eq 0 ]
-    run ldapsearch -LLL -H ldap:/// -D cn=admin,${BASE_DN} -w adminpwd \
+    run ldapsearch -LLL -h localhost -D cn=admin,${BASE_DN} -w adminpwd \
         -b cn=manager,ou=aclroles,${BASE_DN}
     [ "${status}" -eq 0 ]
-    run ldapsearch -LLL -H ldap:/// -D cn=admin,${BASE_DN} -w adminpwd \
+    run ldapsearch -LLL -h localhost -D cn=admin,${BASE_DN} -w adminpwd \
         -b cn=editowninfos,ou=aclroles,${BASE_DN}
     [ "${status}" -eq 0 ]
-    run ldapsearch -LLL -H ldap:/// -D cn=admin,${BASE_DN} -w adminpwd \
+    run ldapsearch -LLL -h localhost -D cn=admin,${BASE_DN} -w adminpwd \
         -b ou=fusiondirectory,${BASE_DN}
     [ "${status}" -eq 0 ]
-    run ldapsearch -LLL -H ldap:/// -D cn=admin,${BASE_DN} -w adminpwd \
+    run ldapsearch -LLL -h localhost -D cn=admin,${BASE_DN} -w adminpwd \
         -b ou=tokens,ou=fusiondirectory,${BASE_DN}
     [ "${status}" -eq 0 ]
-    run ldapsearch -LLL -H ldap:/// -D cn=admin,${BASE_DN} -w adminpwd \
+    run ldapsearch -LLL -h localhost -D cn=admin,${BASE_DN} -w adminpwd \
         -b cn=config,ou=fusiondirectory,${BASE_DN}
     [ "${status}" -eq 0 ]
-    run ldapsearch -LLL -H ldap:/// -D cn=admin,${BASE_DN} -w adminpwd \
+    run ldapsearch -LLL -h localhost -D cn=admin,${BASE_DN} -w adminpwd \
         -b ou=locks,ou=fusiondirectory,${BASE_DN}
     [ "${status}" -eq 0 ]
-    run ldapsearch -LLL -H ldap:/// -D cn=admin,${BASE_DN} -w adminpwd \
+    run ldapsearch -LLL -h localhost -D cn=admin,${BASE_DN} -w adminpwd \
         -b ou=snapshots,${BASE_DN}
     [ "${status}" -eq 0 ]
 
-    run ldapwhoami -x -H ldap:/// -D uid=fd-admin,${BASE_DN} -w fdadminpwd
+    run ldapwhoami -x -h localhost -D uid=fd-admin,${BASE_DN} -w fdadminpwd
     [ "${status}" -eq 0 ]
 }
 
