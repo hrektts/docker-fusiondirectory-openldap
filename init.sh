@@ -26,7 +26,7 @@ FD_ADMIN_PASSWORD=${FD_ADMIN_PASSWORD:-"adminpassword"}
 
 touch /tmp/delete.ldif
 
-if ${LDAP_READONLY_USER}; then
+if "${LDAP_READONLY_USER}"; then
     cat <<EOF >> /tmp/delete.ldif
 dn: cn=${LDAP_READONLY_USER_USERNAME},${SUFFIX}
 changetype: delete
@@ -68,7 +68,7 @@ userPassword: ${LDAP_ADMIN_PASSWORD}
 
 EOF
 
-if ${LDAP_READONLY_USER}; then
+if "${LDAP_READONLY_USER}"; then
     cat <<EOF >> /tmp/base.ldif
 dn: cn=${LDAP_READONLY_USER_USERNAME},${SUFFIX}
 objectClass: simpleSecurityObject
