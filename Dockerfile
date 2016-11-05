@@ -1,7 +1,7 @@
 FROM osixia/openldap:1.1.6
 MAINTAINER mps299792458@gmail.com
 
-ENV FUSIONDIRECTORY_VERSION=1.0.15-1
+ENV FUSIONDIRECTORY_VERSION=1.0.16-1
 
 RUN apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys E184859262B4981F \
  && echo "deb http://repos.fusiondirectory.org/debian-jessie jessie main" \
