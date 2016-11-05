@@ -9,12 +9,15 @@ env:
 
 before_install:
   - apt-cache madison docker-engine
-  - sudo apt-get -o Dpkg::Options::="--force-confnew" install -y docker-engine=${DOCKER_VERSION}
+  - >-
+    sudo apt-get -o Dpkg::Options::='--force-confnew' install -y
+    docker-engine=${DOCKER_VERSION}
   - docker version
   - docker info
   - sudo add-apt-repository ppa:duggan/bats --yes
   - sudo apt-get update -y
-  - sudo apt-get install -y bats
+  - sudo apt-get install -y bats ldap-utils
+  - which ldapsearch
 
 script:
   - make test
