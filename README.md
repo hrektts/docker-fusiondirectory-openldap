@@ -1,10 +1,9 @@
 # docker-fusiondirectory-openldap
 
-[![Travis Build Status](https://travis-ci.org/hrektts/docker-fusiondirectory-openldap.svg?branch=master)](https://travis-ci.org/hrektts/docker-fusiondirectory-openldap)
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-
 Dockerfile to build a [OpenLDAP](http://www.openldap.org/) container image that
 includes the [FusionDirectory](https://www.fusiondirectory.org/) schemas.
+
+[![Travis Build Status](https://travis-ci.org/hrektts/docker-fusiondirectory-openldap.svg?branch=master)](https://travis-ci.org/hrektts/docker-fusiondirectory-openldap)
 
 ## Quick Start
 
