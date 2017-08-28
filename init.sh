@@ -220,5 +220,48 @@ fusiondirectory-insert-schema -i /etc/ldap/schema/fusiondirectory/*.schema
 fusiondirectory-insert-schema -m /etc/ldap/schema/fusiondirectory/modify/*.schema
 ldapadd -x -D "cn=admin,${SUFFIX}" -w ${LDAP_ADMIN_PASSWORD} -f /tmp/add.ldif
 
+#add configuration for groupOfNames, was only for groupOfUniqueNames only
+#https://technicalnotes.wordpress.com/2014/04/19/openldap-setup-with-memberof-overlay/
+#with ldapadd -Q -Y EXTERNAL -H ldapi:///
+#or   ldapadd -c -x -D "cn=admin,cn=config" -w ${LDAP_CONFIG_PASSWORD}
+cat << EOF | ldapadd -Q -Y EXTERNAL -H ldapi:///
+dn: olcOverlay={0}memberof,olcDatabase={1}hdb,cn=config
+objectClass: olcOverlayConfig
+objectClass: olcMemberOf
+olcOverlay: {0}memberof
+olcMemberOfDangling: ignore
+olcMemberOfRefInt: TRUE
+olcMemberOfGroupOC: groupOfNames
+olcMemberOfMemberAD: member
+olcMemberOfMemberOfAD: memberOf
+EOF
+
+#add standard people with passwd change acl AND groups
+cat << EOF | ldapadd -c -x -D "cn=admin,${SUFFIX}" -w ${LDAP_ADMIN_PASSWORD}
+dn: cn=editownpassword,ou=aclroles,${SUFFIX}
+objectClass: top
+objectClass: gosaRole
+cn: editownpassword
+description: Allow to change it's password
+gosaAclTemplate: 0:user/user;sr#userPassword;rw
+
+dn: ou=people,${SUFFIX}
+ou: people
+objectClass: organizationalUnit
+objectClass: gosaAcl
+gosaAclEntry: 0:subtree:$(echo -n cn=editownpassword,ou=aclroles,${SUFFIX} | base64):Kg==
+
+dn: ou=groups,${SUFFIX}
+ou: groups
+objectClass: organizationalUnit
+EOF
+
+#load user data if available (/container/service/slapd/assets/config/bootstrap/ldif/custom is not working well 4 me)
+if [ -d /var/ldap-init-data ]; then
+    for f in /var/ldap-init-data/*.ldif; do
+        ldapadd -c -x -D "cn=admin,${SUFFIX}" -w ${LDAP_ADMIN_PASSWORD} -f $f
+    done
+fi
+
 rm -rf /tmp/*
 touch ${BOOTSTRAPPED}

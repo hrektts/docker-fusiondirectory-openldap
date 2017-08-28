@@ -3,21 +3,10 @@
 Dockerfile to build a [OpenLDAP](http://www.openldap.org/) container image that
 includes the [FusionDirectory](https://www.fusiondirectory.org/) schemas.
 
-[![Travis Build Status](https://travis-ci.org/hrektts/docker-fusiondirectory-openldap.svg?branch=master)](https://travis-ci.org/hrektts/docker-fusiondirectory-openldap)
 
-## Quick Start
-
-You can launch the image using the docker command:
-
-``` shell
-docker run --name ldap -p 389:389 \
-  -e LDAP_ORGANISATION="Example Organization" \
-  -e LDAP_DOMAIN="example.org" \
-  -e LDAP_ADMIN_PASSWORD="password" \
-  -e FD_ADMIN_PASSWORD="fdadminpwd" \
-  -d hrektts/fusiondirectory-openldap:latest
-```
+WARNING: includes some custom modifications
 
 ## References
 
+[hrektts/docker-fusiondirectory-openldap](https://github.com/hrektts/docker-fusiondirectory-openldap)
 [osixia/docker-openldap](https://github.com/osixia/docker-openldap)
