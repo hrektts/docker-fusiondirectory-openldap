@@ -223,8 +223,8 @@ ldapadd -x -D "cn=admin,${SUFFIX}" -w ${LDAP_ADMIN_PASSWORD} -f /tmp/add.ldif
 #add configuration for groupOfNames, was only for groupOfUniqueNames only
 #https://technicalnotes.wordpress.com/2014/04/19/openldap-setup-with-memberof-overlay/
 #with ldapadd -Q -Y EXTERNAL -H ldapi:///
-#or   ldapadd -c -x -D "cn=admin,cn=config" -w ${LDAP_CONFIG_PASSWORD}
-cat << EOF | ldapadd -Q -Y EXTERNAL -H ldapi:///
+#or   ldapadd -c -x -D "cn=admin,cn=config" -w "${LDAP_CONFIG_PASSWORD}"
+ldapadd -Q -Y EXTERNAL -H ldapi:/// << EOF
 dn: olcOverlay={0}memberof,olcDatabase={1}hdb,cn=config
 objectClass: olcOverlayConfig
 objectClass: olcMemberOf
@@ -236,8 +236,24 @@ olcMemberOfMemberAD: member
 olcMemberOfMemberOfAD: memberOf
 EOF
 
+#add auditlog module
+ldapmodify -Q -Y EXTERNAL -H ldapi:/// << EOF
+dn: cn=module{0},cn=config
+changetype: modify
+add: olcModuleLoad
+olcModuleLoad: auditlog.la
+EOF
+[ -n "${LDAP_AUDIT_FILE}" ] && ldapmodify -Q -Y EXTERNAL -H ldapi:/// << EOF
+dn: olcOverlay=auditlog,olcDatabase={1}hdb,cn=config
+changetype: add
+objectClass: olcOverlayConfig
+objectClass: olcAuditLogConfig
+olcOverlay: auditlog
+olcAuditlogFile: ${LDAP_AUDIT_FILE}
+EOF
+
 #add standard people with passwd change acl AND groups
-cat << EOF | ldapadd -c -x -D "cn=admin,${SUFFIX}" -w ${LDAP_ADMIN_PASSWORD}
+ldapadd -c -x -D "cn=admin,${SUFFIX}" -w "${LDAP_ADMIN_PASSWORD}" << EOF
 dn: cn=editownpassword,ou=aclroles,${SUFFIX}
 objectClass: top
 objectClass: gosaRole
@@ -259,7 +275,7 @@ EOF
 #load user data if available (/container/service/slapd/assets/config/bootstrap/ldif/custom is not working well 4 me)
 if [ -d /var/ldap-init-data ]; then
     for f in /var/ldap-init-data/*.ldif; do
-        ldapadd -c -x -D "cn=admin,${SUFFIX}" -w ${LDAP_ADMIN_PASSWORD} -f $f
+        ldapadd -c -x -D "cn=admin,${SUFFIX}" -w "${LDAP_ADMIN_PASSWORD}" -f "$f"
     done
 fi
 
