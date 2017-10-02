@@ -1,0 +1,20 @@
+#!/bin/bash
+
+#if we are configured to store everytking in single dir, make proper symlinks
+SINGLEDIR=/var/lib/ldap-single
+
+if [ -d ${SINGLEDIR} ]; then
+ mkdir -p ${SINGLEDIR}/conf ${SINGLEDIR}/data
+ chown -R openldap:openldap ${SINGLEDIR}/conf ${SINGLEDIR}/data
+ rm -rf /etc/ldap/slapd.d /var/lib/ldap
+ ln -s ${SINGLEDIR}/conf /etc/ldap/slapd.d
+ ln -s ${SINGLEDIR}/data /var/lib/ldap
+fi
+
+#if previous start was not complete (or never was) wipe so we can start fresh
+FIRST_START_DONE=/etc/ldap/slapd.d/slapd-first-start-done
+mkdir -p /etc/ldap/slapd.d /var/lib/ldap
+if [ ! -e "${FIRST_START_DONE}" ]; then
+ find /etc/ldap/slapd.d -mindepth 1 -delete
+ find /var/lib/ldap -mindepth 1 -delete
+fi

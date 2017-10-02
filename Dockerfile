@@ -17,7 +17,8 @@ RUN apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys D744D55EACDA69FF \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY init.sh /sbin/init.sh
-COPY init.single.dir /sbin/init.single.dir
-RUN chmod 755 /sbin/init.sh /sbin/init.single.dir
-RUN sed -i "/# create dir if they not already exists/i /sbin/init.single.dir" /container/service/slapd/startup.sh
-RUN sed -i "/# stop OpenLDAP/i /sbin/init.sh" /container/service/slapd/startup.sh
+COPY init.dirs /sbin/init.dirs
+RUN chmod 755 /sbin/init.sh /sbin/init.dirs
+RUN sed -i "/^FIRST_START_DONE=/aFIRST_START_DONE=/etc/ldap/slapd.d/slapd-first-start-done" /container/service/slapd/startup.sh
+RUN sed -i "/# create dir if they not already exists/i/sbin/init.dirs\n" /container/service/slapd/startup.sh
+RUN sed -i "/# stop OpenLDAP/c\    /sbin/init.sh\n" /container/service/slapd/startup.sh
