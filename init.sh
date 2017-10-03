@@ -19,7 +19,7 @@ for elem in "${domain_elems[@]}" ; do
 done
 
 CN_ADMIN="cn=admin,ou=aclroles,${SUFFIX}"
-UID_FD_ADMIN="uid=fd-admin,${SUFFIX}"
+UID_FD_ADMIN="uid=fd-admin,ou=people,${SUFFIX}"
 CN_ADMIN_BS64=$(echo -n ${CN_ADMIN} | base64 | tr -d '\n')
 UID_FD_ADMIN_BS64=$(echo -n ${UID_FD_ADMIN} | base64 | tr -d '\n')
 FD_ADMIN_PASSWORD=${FD_ADMIN_PASSWORD:-"adminpassword"}
@@ -83,16 +83,6 @@ fi
 ldapadd -x -D "cn=admin,${SUFFIX}" -w ${LDAP_ADMIN_PASSWORD} -f /tmp/base.ldif
 
 cat <<EOF > /tmp/add.ldif
-dn: uid=fd-admin,${SUFFIX}
-objectClass: inetOrgPerson
-objectClass: organizationalPerson
-objectClass: person
-cn: System Administrator
-sn: Administrator
-givenName: System
-uid: fd-admin
-userPassword: ${FD_ADMIN_PASSWORD}
-
 dn: ou=aclroles,${SUFFIX}
 objectClass: organizationalUnit
 ou: aclroles
@@ -118,6 +108,34 @@ description: Allow users to edit their own information (main tab and posix use
 objectClass: top
 objectClass: gosaRole
 gosaAclTemplate: 0:user/posixAccount;srw,user/user;srw
+
+dn: cn=editownpassword,ou=aclroles,${SUFFIX}
+changetype: add
+objectClass: top
+objectClass: gosaRole
+cn: editownpassword
+description: Allow to change it's password
+gosaAclTemplate: 0:user/user;sr#userPassword;rw
+
+dn: ou=people,${SUFFIX}
+ou: people
+objectClass: organizationalUnit
+objectClass: gosaAcl
+gosaAclEntry: 0:subtree:$(echo -n cn=editownpassword,ou=aclroles,${SUFFIX} | base64):Kg==
+
+dn: ou=groups,${SUFFIX}
+ou: groups
+objectClass: organizationalUnit
+
+dn: ${UID_FD_ADMIN}
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+cn: System Administrator
+sn: Administrator
+givenName: System
+uid: fd-admin
+userPassword: ${FD_ADMIN_PASSWORD}
 
 dn: ou=fusiondirectory,${SUFFIX}
 objectClass: organizationalUnit
@@ -236,14 +254,13 @@ olcMemberOfMemberAD: member
 olcMemberOfMemberOfAD: memberOf
 EOF
 
-#add auditlog module
-ldapmodify -Q -Y EXTERNAL -H ldapi:/// << EOF
+#set up auditing
+[ -n "${LDAP_AUDIT_FILE}" ] && ldapmodify -Q -Y EXTERNAL -H ldapi:/// << EOF
 dn: cn=module{0},cn=config
 changetype: modify
 add: olcModuleLoad
 olcModuleLoad: auditlog.la
-EOF
-[ -n "${LDAP_AUDIT_FILE}" ] && ldapmodify -Q -Y EXTERNAL -H ldapi:/// << EOF
+
 dn: olcOverlay=auditlog,olcDatabase={1}hdb,cn=config
 changetype: add
 objectClass: olcOverlayConfig
@@ -252,27 +269,59 @@ olcOverlay: auditlog
 olcAuditlogFile: ${LDAP_AUDIT_FILE}
 EOF
 
-#add standard people with passwd change acl AND groups
-ldapadd -c -x -D "cn=admin,${SUFFIX}" -w "${LDAP_ADMIN_PASSWORD}" << EOF
-dn: cn=editownpassword,ou=aclroles,${SUFFIX}
-objectClass: top
-objectClass: gosaRole
-cn: editownpassword
-description: Allow to change it's password
-gosaAclTemplate: 0:user/user;sr#userPassword;rw
+#set up replication
+[ -n "${LDAP_SERVERID}" -a -n "${LDAP_REPLICATION_URI1}" -a -n "${LDAP_REPLICATION_URI2}" ] && ldapmodify -Q -Y EXTERNAL -H ldapi:/// << EOF
+dn: cn=config
+changetype: modify
+add: olcServerID
+olcServerID: ${LDAP_SERVERID}
 
-dn: ou=people,${SUFFIX}
-ou: people
-objectClass: organizationalUnit
-objectClass: gosaAcl
-gosaAclEntry: 0:subtree:$(echo -n cn=editownpassword,ou=aclroles,${SUFFIX} | base64):Kg==
+dn: cn=module{0},cn=config
+changetype: modify
+add: olcModuleLoad
+olcModuleLoad: syncprov.la
 
-dn: ou=groups,${SUFFIX}
-ou: groups
-objectClass: organizationalUnit
+dn: olcDatabase={1}hdb,cn=config
+changetype: modify
+add: olcSyncRepl
+olcSyncRepl: rid=001
+  provider=${LDAP_REPLICATION_URI1}
+  bindmethod=simple
+  binddn="cn=admin,${SUFFIX}"
+  credentials="${LDAP_ADMIN_PASSWORD}"
+  searchbase="${SUFFIX}"
+  scope=sub
+  schemachecking=on
+  type=refreshAndPersist
+  retry="10 5 300 5"
+  interval=00:00:05:00
+  timeout=1
+olcSyncRepl: rid=002
+  provider=${LDAP_REPLICATION_URI2}
+  bindmethod=simple
+  binddn="cn=admin,${SUFFIX}"
+  credentials="${LDAP_ADMIN_PASSWORD}"
+  searchbase="${SUFFIX}"
+  scope=sub
+  schemachecking=on
+  type=refreshAndPersist
+  retry="10 5 300 5"
+  interval=00:00:05:00
+  timeout=1
+-
+add: olcMirrorMode
+olcMirrorMode: TRUE
+
+dn: olcOverlay=syncprov,olcDatabase={1}hdb,cn=config
+changetype: add
+objectClass: olcOverlayConfig
+objectClass: olcSyncProvConfig
+olcOverlay: syncprov
+olcSpSessionLog: 300
 EOF
 
 #load user data if available (/container/service/slapd/assets/config/bootstrap/ldif/custom is not working well 4 me)
+#may fail due to replication -> fail; user should configure only one replica with this initial data
 if [ -d /var/ldap-init-data ]; then
     for f in /var/ldap-init-data/*.ldif; do
         ldapadd -c -x -D "cn=admin,${SUFFIX}" -w "${LDAP_ADMIN_PASSWORD}" -f "$f"
