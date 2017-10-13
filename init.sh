@@ -292,10 +292,11 @@ olcSyncRepl: rid=001
   searchbase="${SUFFIX}"
   scope=sub
   schemachecking=on
-  type=refreshAndPersist
-  retry="10 5 300 5"
-  interval=00:00:05:00
-  timeout=1
+  type=refreshOnly
+  retry="5 3 5 2"
+  interval=00:00:00:10
+  timeout=3
+  keepalive=60:5:60
 olcSyncRepl: rid=002
   provider=${LDAP_REPLICATION_URI2}
   bindmethod=simple
@@ -304,10 +305,11 @@ olcSyncRepl: rid=002
   searchbase="${SUFFIX}"
   scope=sub
   schemachecking=on
-  type=refreshAndPersist
-  retry="10 5 300 5"
-  interval=00:00:05:00
-  timeout=1
+  type=refreshOnly
+  retry="5 3 5 2"
+  interval=00:00:00:10
+  timeout=3
+  keepalive=60:5:60
 -
 add: olcMirrorMode
 olcMirrorMode: TRUE
