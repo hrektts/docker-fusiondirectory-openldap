@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.3.0
+* Retry replication forever on error
+
 ## 0.2.0
 * Add support for passing replication cookie to slapd via env var LDAP\_REPLICATION\_COOKIE
 
