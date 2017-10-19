@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#if we are configured to store everytking in single dir, make proper symlinks
+#if we are configured to store everything in single dir, make proper symlinks
 SINGLEDIR=/var/lib/ldap-single
 
 if [ -d ${SINGLEDIR} ]; then

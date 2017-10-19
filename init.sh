@@ -110,7 +110,6 @@ objectClass: gosaRole
 gosaAclTemplate: 0:user/posixAccount;srw,user/user;srw
 
 dn: cn=editownpassword,ou=aclroles,${SUFFIX}
-changetype: add
 objectClass: top
 objectClass: gosaRole
 cn: editownpassword
@@ -220,6 +219,7 @@ fdPasswordRecoveryMailBody:: SGVsbG8sCgpIZXJlIGFyZSB5b3VyIGluZm9ybWF0aW9ucyA6I
 fdPasswordRecoveryMail2Subject: [FusionDirectory] Password recovery successful
 fdPasswordRecoveryMail2Body:: SGVsbG8sCgpZb3VyIHBhc3N3b3JkIGhhcyBiZWVuIGNoYW5n
  ZWQuCllvdXIgbG9naW4gaXMgc3RpbGwgJXMu
+fdTabHook: user|preremove|test "%uid%" != "'fd-admin'"
 
 dn: ou=locks,ou=fusiondirectory,${SUFFIX}
 objectClass: organizationalUnit
