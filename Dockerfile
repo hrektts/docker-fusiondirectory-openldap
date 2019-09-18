@@ -1,5 +1,5 @@
 FROM osixia/openldap:1.1.9
-LABEL maintainer="mps299792458@gmail.com" \
+LABEL maintainer="it@feki.de" \
       version="1.1.9-1.2-1"
 
 ENV FUSIONDIRECTORY_VERSION=1.2-1

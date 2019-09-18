@@ -3,7 +3,7 @@
 Dockerfile to build a [OpenLDAP](http://www.openldap.org/) container image that
 includes the [FusionDirectory](https://www.fusiondirectory.org/) schemas.
 
-[![Travis Build Status](https://travis-ci.org/hrektts/docker-fusiondirectory-openldap.svg?branch=master)](https://travis-ci.org/hrektts/docker-fusiondirectory-openldap)
+[![Travis Build Status](https://travis-ci.org/Fekide/docker-fusiondirectory-openldap.svg?branch=master)](https://travis-ci.org/Fekide/docker-fusiondirectory-openldap)
 
 ## Quick Start
 
