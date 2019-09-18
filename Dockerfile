@@ -4,7 +4,7 @@ LABEL maintainer="it@feki.de" \
 
 ENV FUSIONDIRECTORY_VERSION=1.2-1
 
-RUN gpg --keyserver keys.gnupg.net --recv-key 0xD744D55EACDA69FF \
+RUN apt-key adv --keyserver hkp://keys.gnupg.net --recv-keys D744D55EACDA69FF \
  && (echo "deb http://repos.fusiondirectory.org/fusiondirectory-current/debian-jessie jessie main"; \
      echo "deb http://repos.fusiondirectory.org/fusiondirectory-extra/debian-jessie jessie main") \
     > /etc/apt/sources.list.d/fusiondirectory-jessie.list \
