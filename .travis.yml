@@ -5,7 +5,7 @@ services:
 
 env:
   global:
-    - DOCKER_VERSION=17.06.0~ce-0~ubuntu
+    - DOCKER_VERSION=18.06.3~ce~3-0~ubuntu
 
 before_install:
   - apt-cache madison docker-ce

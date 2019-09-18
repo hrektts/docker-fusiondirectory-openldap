@@ -18,6 +18,16 @@ docker run --name ldap -p 389:389 \
   -d hrektts/fusiondirectory-openldap:latest
 ```
 
+## Environment Variables
+
+|      Variable       | Function                                                  |       default |
+| :-----------------: | --------------------------------------------------------- | ------------: |
+|  LDAP_ORGANISATION  | Name of your Organisation                                 |  Example Inc. |
+|     LDAP_DOMAIN     | Domain of your Organisation                               |   example.org |
+| LDAP_ADMIN_PASSWORD | Password for the LDAP Admin  (cn=admin,dc=example,dc=org) |         admin |
+|  FD_ADMIN_PASSWORD  | Password for the FusionDirectory Admin (fd-admin)         | adminpassword |
+
 ## References
 
+More Environment variables and information here:
 [osixia/docker-openldap](https://github.com/osixia/docker-openldap)

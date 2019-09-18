@@ -1,13 +1,13 @@
 FROM osixia/openldap:1.1.9
 LABEL maintainer="it@feki.de" \
-      version="1.1.9-1.2-1"
+      version="1.1.9-1.3-1"
 
-ENV FUSIONDIRECTORY_VERSION=1.2-1
+ENV FUSIONDIRECTORY_VERSION=1.3-1
 
 RUN apt-key adv --keyserver hkp://keys.gnupg.net --recv-keys D744D55EACDA69FF \
- && (echo "deb http://repos.fusiondirectory.org/fusiondirectory-current/debian-jessie jessie main"; \
-     echo "deb http://repos.fusiondirectory.org/fusiondirectory-extra/debian-jessie jessie main") \
-    > /etc/apt/sources.list.d/fusiondirectory-jessie.list \
+ && (echo "deb http://repos.fusiondirectory.org/fusiondirectory-current/debian-stretch stretch main"; \
+     echo "deb http://repos.fusiondirectory.org/fusiondirectory-extra/debian-stretch stretch main") \
+    > /etc/apt/sources.list.d/fusiondirectory-stretch.list \
  && apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     fusiondirectory-schema=${FUSIONDIRECTORY_VERSION} \
