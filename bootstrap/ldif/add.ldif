@@ -1,4 +1,4 @@
-dn: uid=fd-admin,{{LDAP_BASE_DN}}
+dn: uid=fd-admin,{{ LDAP_BASE_DN }}
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
 objectClass: person
@@ -6,27 +6,27 @@ cn: System Administrator
 sn: Administrator
 givenName: System
 uid: fd-admin
-userPassword: {{FD_ADMIN_PASSWORD}}
+userPassword: {{ FD_ADMIN_PASSWORD }}
 
-dn: ou=aclroles,{{LDAP_BASE_DN}}
+dn: ou=aclroles,{{ LDAP_BASE_DN }}
 objectClass: organizationalUnit
 ou: aclroles
 
-dn: cn=admin,ou=aclroles,{{LDAP_BASE_DN}}
+dn: cn=admin,ou=aclroles,{{ LDAP_BASE_DN }}
 objectClass: top
 objectClass: gosaRole
 cn: admin
 description: Gives all rights on all objects
 gosaAclTemplate: 0:all;cmdrw
 
-dn: cn=manager,ou=aclroles,{{LDAP_BASE_DN}}
+dn: cn=manager,ou=aclroles,{{ LDAP_BASE_DN }}
 cn: manager
 description: Give all rights on users in the given branch
 objectClass: top
 objectClass: gosaRole
 gosaAclTemplate: 0:user/password;cmdrw,user/user;cmdrw,user/posixAccount;cmdrw
 
-dn: cn=editowninfos,ou=aclroles,{{LDAP_BASE_DN}}
+dn: cn=editowninfos,ou=aclroles,{{ LDAP_BASE_DN }}
 cn: editowninfos
 description: Allow users to edit their own information (main tab and posix use
   only on base)
@@ -34,23 +34,23 @@ objectClass: top
 objectClass: gosaRole
 gosaAclTemplate: 0:user/posixAccount;srw,user/user;srw
 
-dn: ou=fusiondirectory,{{LDAP_BASE_DN}}
+dn: ou=fusiondirectory,{{ LDAP_BASE_DN }}
 objectClass: organizationalUnit
 ou: fusiondirectory
 
-dn: ou=tokens,ou=fusiondirectory,{{LDAP_BASE_DN}}
+dn: ou=tokens,ou=fusiondirectory,{{ LDAP_BASE_DN }}
 objectClass: organizationalUnit
 ou: tokens
 
-dn: ou=locks,ou=fusiondirectory,{{LDAP_BASE_DN}}
+dn: ou=locks,ou=fusiondirectory,{{ LDAP_BASE_DN }}
 objectClass: organizationalUnit
 ou: locks
 
-dn: ou=snapshots,{{LDAP_BASE_DN}}
+dn: ou=snapshots,{{ LDAP_BASE_DN }}
 objectClass: organizationalUnit
 ou: snapshots
 
-dn: cn=config,ou=fusiondirectory,{{LDAP_BASE_DN}}
+dn: cn=config,ou=fusiondirectory,{{ LDAP_BASE_DN }}
 fdTheme: default
 fdTimezone: America/New_York
 fusionConfigMd5: 7fd38d273a2f2e14c749467f4c38a650
@@ -64,7 +64,7 @@ fdLoginAttribute: uid
 fdWarnSSL: TRUE
 fdSessionLifeTime: 1800
 fdEnableSnapshots: TRUE
-fdSnapshotBase: ou=snapshots,{{LDAP_BASE_DN}}
+fdSnapshotBase: ou=snapshots,{{ LDAP_BASE_DN }}
 fdSslKeyPath: /etc/ssl/private/fd.key
 fdSslCertPath: /etc/ssl/certs/fd.cert
 fdSslCaCertPath: /etc/ssl/certs/ca.cert

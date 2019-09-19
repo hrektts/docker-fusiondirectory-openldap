@@ -1,5 +1,7 @@
-dn: ${SUFFIX}
+dn: {{ LDAP_BASE_DN }}
 changetype: modify
 objectClass: gosaDepartment
+changetype: modify
 objectClass: gosaAcl
-gosaAclEntry: 0:subtree:{{CN_ADMIN_BS64}}:{{UID_FD_ADMIN_BS64}}
+changetype: modify
+gosaAclEntry: 0:subtree:{{ CN_ADMIN_BS64 }}:{{ UID_FD_ADMIN_BS64 }}
