@@ -1,6 +1,6 @@
-FROM osixia/openldap:1.1.11
+FROM osixia/openldap:1.2.5
 MAINTAINER Feki.de e.V. "it@feki.de"
-LABEL version="1.1.11-1.3-1"
+LABEL version="1.2.5-1.3-1"
 
 ADD bootstrap /var/fusiondirectory/bootstrap
 ADD certs /container/service/slapd/assets/certs
