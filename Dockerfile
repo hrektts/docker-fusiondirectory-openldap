@@ -1,6 +1,6 @@
-FROM osixia/openldap:1.2.5
+FROM osixia/openldap:1.2.4
 MAINTAINER Feki.de e.V. "it@feki.de"
-LABEL version="1.2.5-1.3-1"
+LABEL version="1.2.4-1.3-1"
 
 ADD bootstrap /var/fusiondirectory/bootstrap
 ADD certs /container/service/slapd/assets/certs
@@ -9,8 +9,8 @@ ADD environment /container/environment/01-custom
 ARG FUSIONDIRECTORY_VERSION=1.3-1
 
 RUN apt-key adv --keyserver keys.gnupg.net --receive-keys D744D55EACDA69FF \
- && (echo "deb http://repos.fusiondirectory.org/fusiondirectory-current/debian-stretch stretch main"; \
-     echo "deb http://repos.fusiondirectory.org/fusiondirectory-extra/debian-stretch stretch main") \
+ && (echo "deb https://repos.fusiondirectory.org/fusiondirectory-current/debian-stretch stretch main"; \
+     echo "deb https://repos.fusiondirectory.org/fusiondirectory-extra/debian-stretch stretch main") \
     > /etc/apt/sources.list.d/fusiondirectory-stretch.list \
  && apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
