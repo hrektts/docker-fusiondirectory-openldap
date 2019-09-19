@@ -1,0 +1,5 @@
+dn: ${SUFFIX}
+changetype: modify
+objectClass: gosaDepartment
+objectClass: gosaAcl
+gosaAclEntry: 0:subtree:{{CN_ADMIN_BS64}}:{{UID_FD_ADMIN_BS64}}

@@ -1,0 +1,127 @@
+dn: uid=fd-admin,{{LDAP_BASE_DN}}
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+cn: System Administrator
+sn: Administrator
+givenName: System
+uid: fd-admin
+userPassword: {{FD_ADMIN_PASSWORD}}
+
+dn: ou=aclroles,{{LDAP_BASE_DN}}
+objectClass: organizationalUnit
+ou: aclroles
+
+dn: cn=admin,ou=aclroles,{{LDAP_BASE_DN}}
+objectClass: top
+objectClass: gosaRole
+cn: admin
+description: Gives all rights on all objects
+gosaAclTemplate: 0:all;cmdrw
+
+dn: cn=manager,ou=aclroles,{{LDAP_BASE_DN}}
+cn: manager
+description: Give all rights on users in the given branch
+objectClass: top
+objectClass: gosaRole
+gosaAclTemplate: 0:user/password;cmdrw,user/user;cmdrw,user/posixAccount;cmdrw
+
+dn: cn=editowninfos,ou=aclroles,{{LDAP_BASE_DN}}
+cn: editowninfos
+description: Allow users to edit their own information (main tab and posix use
+  only on base)
+objectClass: top
+objectClass: gosaRole
+gosaAclTemplate: 0:user/posixAccount;srw,user/user;srw
+
+dn: ou=fusiondirectory,{{LDAP_BASE_DN}}
+objectClass: organizationalUnit
+ou: fusiondirectory
+
+dn: ou=tokens,ou=fusiondirectory,{{LDAP_BASE_DN}}
+objectClass: organizationalUnit
+ou: tokens
+
+dn: ou=locks,ou=fusiondirectory,{{LDAP_BASE_DN}}
+objectClass: organizationalUnit
+ou: locks
+
+dn: ou=snapshots,{{LDAP_BASE_DN}}
+objectClass: organizationalUnit
+ou: snapshots
+
+dn: cn=config,ou=fusiondirectory,{{LDAP_BASE_DN}}
+fdTheme: default
+fdTimezone: America/New_York
+fusionConfigMd5: 7fd38d273a2f2e14c749467f4c38a650
+fdSchemaCheck: TRUE
+fdPasswordDefaultHash: ssha
+fdListSummary: TRUE
+fdModificationDetectionAttribute: entryCSN
+fdLogging: TRUE
+fdLdapSizeLimit: 200
+fdLoginAttribute: uid
+fdWarnSSL: TRUE
+fdSessionLifeTime: 1800
+fdEnableSnapshots: TRUE
+fdSnapshotBase: ou=snapshots,{{LDAP_BASE_DN}}
+fdSslKeyPath: /etc/ssl/private/fd.key
+fdSslCertPath: /etc/ssl/certs/fd.cert
+fdSslCaCertPath: /etc/ssl/certs/ca.cert
+fdCasServerCaCertPath: /etc/ssl/certs/ca.cert
+fdCasHost: localhost
+fdCasPort: 443
+fdCasContext: /cas
+fdAccountPrimaryAttribute: uid
+fdCnPattern: %givenName% %sn%
+fdStrictNamingRules: TRUE
+fdMinId: 100
+fdUidNumberBase: 1100
+fdGidNumberBase: 1100
+fdUserRDN: ou=people
+fdGroupRDN: ou=groups
+fdAclRoleRDN: ou=aclroles
+fdIdAllocationMethod: traditional
+fdDebugLevel: 0
+fdShells: /bin/ash
+fdShells: /bin/bash
+fdShells: /bin/csh
+fdShells: /bin/sh
+fdShells: /bin/ksh
+fdShells: /bin/tcsh
+fdShells: /bin/dash
+fdShells: /bin/zsh
+fdShells: /sbin/nologin
+fdShells: /bin/false
+fdForcePasswordDefaultHash: FALSE
+fdHandleExpiredAccounts: FALSE
+fdForceSSL: FALSE
+fdHttpAuthActivated: FALSE
+fdCasActivated: FALSE
+fdRestrictRoleMembers: FALSE
+fdDisplayErrors: FALSE
+fdLdapStats: FALSE
+fdDisplayHookOutput: FALSE
+fdAclTabOnObjects: FALSE
+cn: config
+fdOGroupRDN: ou=groups
+fdForceSaslPasswordAsk: FALSE
+fdDashboardNumberOfDigit: 3
+fdDashboardPrefix: PC
+fdDashboardExpiredAccountsDays: 15
+objectClass: fusionDirectoryConf
+objectClass: fusionDirectoryPluginsConf
+objectClass: fdDashboardPluginConf
+objectClass: fdPasswordRecoveryConf
+fdPasswordRecoveryActivated: FALSE
+fdPasswordRecoveryEmail: to.be@chang.ed
+fdPasswordRecoveryValidity: 10
+fdPasswordRecoverySalt: SomethingSecretAndVeryLong
+fdPasswordRecoveryUseAlternate: FALSE
+fdPasswordRecoveryMailSubject: [FusionDirectory] Password recovery link
+fdPasswordRecoveryMailBody:: SGVsbG8sCgpIZXJlIGFyZSB5b3VyIGluZm9ybWF0aW9ucyA6I
+ AogLSBMb2dpbiA6ICVzCiAtIExpbmsgOiAlcwoKVGhpcyBsaW5rIGlzIG9ubHkgdmFsaWQgZm9yID
+ EwIG1pbnV0ZXMu
+fdPasswordRecoveryMail2Subject: [FusionDirectory] Password recovery successful
+fdPasswordRecoveryMail2Body:: SGVsbG8sCgpZb3VyIHBhc3N3b3JkIGhhcyBiZWVuIGNoYW5n
+ ZWQuCllvdXIgbG9naW4gaXMgc3RpbGwgJXMu
