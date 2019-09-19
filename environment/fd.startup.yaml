@@ -1,0 +1,11 @@
+# This is the default image startup configuration file
+# this file define environment variables used during the container **first start** in **startup files**.
+
+# This file is deleted right after startup files are processed for the first time,
+# after that all these values will not be available in the container environment.
+# This helps to keep your container configuration secret.
+# more information : https://github.com/osixia/docker-light-baseimage
+
+# FusionDirectory environment variables
+FD_ADMIN_USERNAME: fd-admin
+FD_ADMIN_PASSWORD: password
